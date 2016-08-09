@@ -1,0 +1,27 @@
+{
+	"name" : "aframevr/slackoverflow",
+	"description" : "Work in progress...",
+	"type" : "library",
+	"license" : "MIT",
+    "require": {
+        	"php": ">= 7"
+    },
+    "minimum-stability" : "stable",
+	"autoload" : {
+		"psr-4" : {
+			"AframeVR\\" : "src/"
+		}
+	},
+	"config" : {
+		"optimize-autoloader" : true
+	},
+	"homepage" : "https://github.com/aframevr/slackoverflow",
+	"support" : {
+		"issues" : "https://github.com/aframevr/slackoverflow/issues",
+		"source" : "https://github.com/aframevr/slackoverflow"
+	},
+	"keywords" : [
+		"php",
+		"aframe"
+	]
+}

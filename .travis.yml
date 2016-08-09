@@ -1,0 +1,21 @@
+language: php
+
+php:
+  - 7.0
+  - 7.0.8
+  - nightly
+  
+before_script:
+  - pip install --user codecov
+  - cd /home/travis/build/aframevr/slackoverflow
+  - composer install
+  - cd $TRAVIS_BUILD_DIR/tests
+
+script:
+  - phpunit --coverage-clover="../coverage.clover"
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+  - cd "../"
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
