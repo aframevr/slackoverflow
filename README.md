@@ -1,6 +1,6 @@
 # SlackOverflow
 
-> Weebhook between slack and api.stackexchange.com
+> Web hook that posts tagged Stack Overflow questions to Slack, updated using reaction emojis<br>
 > Work in progress...
 
 [![Minimum PHP Version][php-image]][php-url]
@@ -34,8 +34,8 @@
 [packagist-dt-image]: http://img.shields.io/packagist/dt/aframevr/slackoverflow.svg?style=flat-square
 [packagist-url]: https://packagist.org/packages/aframevr/slackoverflow
 <!-- Scrutinizer -->
-[scrutinizer-image]: https://scrutinizer-ci.com/g/aframevr/slackoverflow/badges/quality-score.png?b=master
-[scrutinizer-url]: https://scrutinizer-ci.com/g/aframevr/slackoverflow/?branch=master
+[scrutinizer-image]: https://scrutinizer-ci.com/g/mkungla/slackoverflow/badges/quality-score.png?b=master
+[scrutinizer-url]: https://scrutinizer-ci.com/g/mkungla/slackoverflow/?branch=master
 <!-- codecov -->
 [codecov-image]: https://codecov.io/gh/aframevr/slackoverflow/branch/master/graph/badge.svg
 [codecov-url]: https://codecov.io/gh/aframevr/slackoverflow
