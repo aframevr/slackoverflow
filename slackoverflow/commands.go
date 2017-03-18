@@ -23,6 +23,9 @@ type Commands struct {
 	Run cmdRun `command:"run" description:"Run Slackoverflow once."`
 
 	// Start slackoverflow start
+	Slack cmdSlack `command:"slack" description:"Slack related commands see slackoverflow slack --help for more info."`
+
+	// Start slackoverflow start
 	Start cmdStart `command:"start" description:"Start Slackoverflow daemon."`
 
 	// Status slackoverflow status

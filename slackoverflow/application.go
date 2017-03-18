@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/aframevr/slackoverflow/slack"
 	"github.com/aframevr/slackoverflow/std"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/logrusorgru/aurora"
@@ -35,11 +36,24 @@ type Application struct {
 	hostname     string
 	config       yamlContents
 	Info         info
+	Slack        slack.Slack
 }
 
 // Run stackoverflow application
 func (s *Application) Run() {
 	s.Banner()
+
+	// Check configuration
+	if !s.config.Validate() {
+		s.config.Reconfigure()
+	}
+
+	// Configure slack
+	stackoverflow.Slack = *slack.Load()
+	stackoverflow.Slack.SetHost(stackoverflow.config.Slack.APIHost)
+	stackoverflow.Slack.SetToken(stackoverflow.config.Slack.Token)
+	stackoverflow.Slack.SetChannel(stackoverflow.config.Slack.Channel)
+
 	// Handle call
 	if _, err := parser.Parse(); err != nil {
 		// Failure was fine since -h or --help flag was provided
@@ -95,5 +109,6 @@ func Start() *Application {
 	stackoverflow.configFile = path.Join(stackoverflow.projectPath, "slackoverflow.yaml")
 	stackoverflow.databaseFile = path.Join(stackoverflow.projectPath, "slackoverflow.db3")
 	stackoverflow.hostname, _ = os.Hostname()
+
 	return stackoverflow
 }
