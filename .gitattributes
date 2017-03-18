@@ -1,4 +1,22 @@
+# FIX CRLF always when developer has not set
+# Linux/Mac: git config --global core.autocrlf input
+# Windows: git config --global core.autocrlf true
+# Auto detect text files and perform LF normalization
+* text=auto
+* eol=lf
+
 # Git attributes to ignore selection of files and directories
 # when publishing any of releases release.
 
 vendor export-ignore
+
+# Ensure that the following files, and file name patterns are treated as a text files
+*.go text
+*.md text
+.editorconfig text
+.gitattributes text
+.gitignore text
+.travis.yml text
+LICENSE text
+README.md text
+Makefile text
