@@ -24,38 +24,39 @@ func UpdateLogLevel() {
 	// Set log level from Flag
 	if argv.Debug {
 		stackoverflow.logLevel = DEBUG
-		Info("Becoming very verbose. Set log level to DEBUG")
+		std.Body("Becoming very verbose. Set log level to DEBUG")
 	} else if argv.Verbose {
 		stackoverflow.logLevel = INFO
 		// Even though Debug will ignore output when debug level is not Set
 		// we still can run that here only if needed
-		Info("Becoming verbose. Set loglevel to loglevel INFO")
+		std.Body("Becoming verbose. Set loglevel to loglevel INFO")
 	} else {
-		switch stackoverflow.config.Slackoverflow.LogLevel {
+
+		switch stackoverflow.config.SlackOverflow.LogLevel {
 		case "EMERGENCY":
 			stackoverflow.logLevel = EMERGENCY
-			Info("Set loglevel to loglevel EMERGENCY")
+			std.Body("Set loglevel to loglevel EMERGENCY")
 		case "ALERT":
 			stackoverflow.logLevel = ALERT
-			Info("Set loglevel to loglevel ALERT")
+			std.Body("Set loglevel to loglevel ALERT")
 		case "CRITICAL":
 			stackoverflow.logLevel = CRITICAL
-			Info("Set loglevel to loglevel CRITICAL")
+			std.Body("Set loglevel to loglevel CRITICAL")
 		case "ERROR":
 			stackoverflow.logLevel = ERROR
-			Info("Set loglevel to loglevel ERROR")
+			std.Body("Set loglevel to loglevel ERROR")
 		case "WARNING":
 			stackoverflow.logLevel = WARNING
-			Info("Set loglevel to loglevel WARNING")
+			std.Body("Set loglevel to loglevel WARNING")
 		case "INFO":
 			stackoverflow.logLevel = INFO
-			Info("Becoming verbose. Set loglevel to loglevel INFO")
+			std.Body("Becoming verbose. Set loglevel to loglevel INFO")
 		case "DEBUG":
 			stackoverflow.logLevel = DEBUG
-			Info("Becoming very verbose. Set loglevel to loglevel DEBUG")
+			std.Body("Becoming very verbose. Set loglevel to loglevel DEBUG")
 		default:
 			stackoverflow.logLevel = NOTICE
-			Info("Becoming verbose. Set loglevel to loglevel NOTICE")
+			std.Body("Becoming verbose. Set loglevel to loglevel NOTICE")
 		}
 	}
 }

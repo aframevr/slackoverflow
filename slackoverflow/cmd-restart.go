@@ -1,5 +1,5 @@
 package slackoverflow
 
 // slackoverflow restart
-// Restart Slackoverflow daemon.
+// Restart SlackOverflow daemon.
 type cmdRestart struct{}

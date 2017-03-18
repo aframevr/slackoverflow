@@ -1,5 +1,5 @@
 package slackoverflow
 
 // slackoverflow start
-// Start Slackoverflow daemon.
+// Start SlackOverflow daemon.
 type cmdStart struct{}

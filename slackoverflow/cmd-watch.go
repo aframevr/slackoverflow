@@ -1,5 +1,5 @@
 package slackoverflow
 
 // slackoverflow watch
-// Slackoverflow .
+// SlackOverflow .
 type cmdWatch struct{}

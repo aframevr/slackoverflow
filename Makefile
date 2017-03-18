@@ -1,5 +1,5 @@
 ################################################################################
-# Slackoverflow make
+# SlackOverflow make
 ################################################################################
 SLACKOVERFLOW = slackoverflow
 SLACKOVERFLOW_PATH = $(PWD)
@@ -41,8 +41,8 @@ help: ## Show this help menu
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[33m%-20s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
 ################################################################################
-build-bin: ## Build new Slackoverflow binary
-	$(call log_info, build new Slackoverflow binary)
+build-bin: ## Build new SlackOverflow binary
+	$(call log_info, build new SlackOverflow binary)
 	$(shell go build -ldflags "${SLACKOVERFLOW_LDFLAGS}" -o ${SLACKOVERFLOW_BINARY} .)
 
 ################################################################################
@@ -56,7 +56,7 @@ info: ## Show makefile variables
 	$(call log_info, SLACKOVERFLOW_LDFLAGS       ${SLACKOVERFLOW_LDFLAGS}.)
 
 ################################################################################
-dependencies: ## Install Slackoverflow build dependencies
+dependencies: ## Install SlackOverflow build dependencies
 	$(call log_info, The Vendor Tool for Go.)
 	@go get -u github.com/kardianos/govendor
 	$(call log_ok, github.com/kardianos/govendor)

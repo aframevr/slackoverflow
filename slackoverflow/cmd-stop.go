@@ -1,5 +1,5 @@
 package slackoverflow
 
 // slackoverflow stop
-// Stop Slackoverflow daemon.
+// Stop SlackOverflow daemon.
 type cmdStop struct{}

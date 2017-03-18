@@ -98,7 +98,7 @@ func (s *Application) Close(code int) {
 // SessionRefresh refresh session and makes sure that all deps are loaded
 func (s *Application) SessionRefresh() {
 
-	// Set Log Level from -v or -d flag default to config.Data.Slackoverflow.LogLevel
+	// Set Log Level from -v or -d flag default to config.Data.SlackOverflow.LogLevel
 	UpdateLogLevel()
 
 	// Load Slack Client

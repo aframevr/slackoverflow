@@ -14,7 +14,7 @@ import (
 
 // Yaml mapping to yaml configuration
 type yamlContents struct {
-	Slackoverflow struct {
+	SlackOverflow struct {
 		LogLevel string `yaml:"log_level"`
 		Watch    int    `yaml:"watch"`
 	} `yaml:"slackoverflow"`
@@ -60,7 +60,7 @@ func (yamlContents *yamlContents) Reconfigure() {
 	std.Hr()
 	Info("Make your choice!")
 	logLevel, _ := reader.ReadString('\n')
-	yamlContents.Slackoverflow.LogLevel = strings.TrimSpace(logLevel)
+	yamlContents.SlackOverflow.LogLevel = strings.TrimSpace(logLevel)
 
 	// stackexchange
 	yamlContents.StackExchange.APIHost = "https://api.stackexchange.com"
@@ -124,7 +124,7 @@ func (yamlContents *yamlContents) Reconfigure() {
 	std.Body("also last (n) questions will be checked for comment count, view count, answer count, score and is question accepted or not.")
 	std.Body("Emoijs of these stats will be removed from older than (n) questions.")
 	std.Hr()
-	fmt.Scan(&yamlContents.Slackoverflow.Watch)
+	fmt.Scan(&yamlContents.SlackOverflow.Watch)
 
 	// Save configFile
 	std.Hr()
@@ -152,5 +152,6 @@ func (yamlContents *yamlContents) readConfig(filePath string) error {
 	if err := yaml.Unmarshal(inputBytes, &yamlContents); err != nil {
 		return err
 	}
+	yamlContents.SlackOverflow.LogLevel = strings.ToUpper(yamlContents.SlackOverflow.LogLevel)
 	return nil
 }

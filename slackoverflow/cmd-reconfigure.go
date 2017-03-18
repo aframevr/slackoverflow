@@ -3,7 +3,7 @@ package slackoverflow
 import "github.com/aframevr/slackoverflow/std"
 
 // slackoverflow reconfigure
-// Reconfigure Slackoverflow.
+// Reconfigure SlackOverflow.
 type cmdReconfigure struct{}
 
 func (a *cmdReconfigure) Execute(args []string) error {

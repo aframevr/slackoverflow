@@ -12,9 +12,9 @@ type cmdConfig struct{}
 
 func (a *cmdConfig) Execute(args []string) error {
 
-	selfConfig := std.NewTable("Slackoverflow Configuration", " ")
-	selfConfig.AddRow("Log Level", stackoverflow.config.Slackoverflow.LogLevel)
-	selfConfig.AddRow("Number of Questions to watch", strconv.Itoa(stackoverflow.config.Slackoverflow.Watch))
+	selfConfig := std.NewTable("SlackOverflow Configuration", " ")
+	selfConfig.AddRow("Log Level", stackoverflow.config.SlackOverflow.LogLevel)
+	selfConfig.AddRow("Number of Questions to watch", strconv.Itoa(stackoverflow.config.SlackOverflow.Watch))
 	selfConfig.Print()
 
 	si := std.NewTable("Session Info", " ")
