@@ -32,8 +32,8 @@ endef
 
 ################################################################################
 # Default goals
-.PHONY: help
-.DEFAULT_GOAL := help
+.PHONY: build-bin
+.DEFAULT_GOAL := build-bin
 
 ################################################################################
 # Help
@@ -43,7 +43,8 @@ help: ## Show this help menu
 ################################################################################
 build-bin: ## Build new SlackOverflow binary
 	$(call log_info, build new SlackOverflow binary)
-	$(shell go build -ldflags "${SLACKOVERFLOW_LDFLAGS}" -o ${SLACKOVERFLOW_BINARY} .)
+	go build -ldflags "${SLACKOVERFLOW_LDFLAGS}" -o ${SLACKOVERFLOW_BINARY}
+	$(call log_ok, new binary ready)
 
 ################################################################################
 info: ## Show makefile variables

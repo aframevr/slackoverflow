@@ -9,7 +9,7 @@ import (
 
 	"github.com/aframevr/slackoverflow/std"
 
-	yaml "gopkg.in/yaml.v2"
+	yaml "github.com/go-yaml/yaml"
 )
 
 // Yaml mapping to yaml configuration
