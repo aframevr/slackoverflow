@@ -25,14 +25,6 @@
 			"revisionTime": "2016-12-16T17:00:44Z"
 		},
 		{
-			"checksumSHA1": "gQPNnwneFBYZXKVN0PaKrqiGemA=",
-			"path": "github.com/mattn/go-sqlite3",
-			"revision": "ca5e3819723d8eeaf170ad510e7da1d6d2e94a08",
-			"revisionTime": "2016-11-11T00:01:23Z",
-			"version": "=v1.2.0",
-			"versionExact": "v1.2.0"
-		},
-		{
 			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
 			"path": "golang.org/x/net/context",
 			"revision": "a6577fac2d73be281a500b310739095313165611",

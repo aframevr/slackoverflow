@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/aframevr/slackoverflow/slack"
+	"github.com/aframevr/slackoverflow/sqlite3"
 	"github.com/aframevr/slackoverflow/std"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/logrusorgru/aurora"
@@ -37,6 +38,7 @@ type Application struct {
 	config       yamlContents
 	Info         info
 	Slack        *slack.Slack
+	SQLite3      *sqlite3.Client
 }
 
 // Run stackoverflow application
@@ -83,6 +85,8 @@ func (s *Application) Banner() {
 func (s *Application) Close(code int) {
 	date := time.Now().Local().Format("15:04:05 - 2 January 2006")
 
+	defer s.SQLite3.DB.Close()
+
 	fmt.Println("")
 	std.Hr()
 	std.Body("Execution elapsed: %s", time.Since(s.startTime))
@@ -91,6 +95,7 @@ func (s *Application) Close(code int) {
 	os.Exit(code)
 }
 
+// SessionRefresh refresh session and makes sure that all deps are loaded
 func (s *Application) SessionRefresh() {
 
 	// Set Log Level from -v or -d flag default to config.Data.Slackoverflow.LogLevel
@@ -107,6 +112,40 @@ func (s *Application) SessionRefresh() {
 		Debug("Slack Client is already loaded.")
 	}
 
+	// Load SQLite3 Client
+	if stackoverflow.SQLite3 == nil {
+		var err error
+		stackoverflow.SQLite3, err = sqlite3.Load(stackoverflow.databaseFile)
+		// Kill the session if we can not open database file
+		if err != nil {
+			Emergency(err.Error())
+		}
+		Ok("SQLite3 Database loaded: %s", stackoverflow.databaseFile)
+
+		// Check does the StackQuestion table exist
+		err = stackoverflow.SQLite3.VerifyTable("StackQuestion")
+		if err != nil {
+			Emergency("Table StackQuestion: %q", err)
+		}
+		Ok("Table: StackQuestion exists.")
+
+		// Check does the StackQuestionLink table exist
+		err = stackoverflow.SQLite3.VerifyTable("StackQuestionLink")
+		if err != nil {
+			Emergency("Table StackQuestionLink: %q", err)
+		}
+		Ok("Table: StackQuestionLink exists.")
+
+		// Check does the StackUser table exist
+		err = stackoverflow.SQLite3.VerifyTable("StackUser")
+		if err != nil {
+			Emergency("Table StackUser: %q", err)
+		}
+		Ok("Table: StackQuestionLink exists.")
+
+	} else {
+		Ok("Table: StackUser exists.")
+	}
 }
 
 // Start session

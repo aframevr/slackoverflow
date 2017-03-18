@@ -62,8 +62,8 @@ dependencies: ## Install Slackoverflow build dependencies
 	$(call log_ok, github.com/kardianos/govendor)
 
 	$(call log_info, sqlite3 driver conforming to the built-in database/sql interface.)
-	@govendor fetch github.com/mattn/go-sqlite3@=v1.2.0
-	$(call log_ok, github.com/mattn/go-sqlite3@=v1.2.0)
+	@go get -u github.com/mattn/go-sqlite3
+	$(call log_ok, github.com/mattn/go-sqlite3)
 
 	$(call log_info, Install Aurora - ultimate ANSI colors for Golang. The package supports Printf/Sprintf etc.)
 	@govendor fetch github.com/logrusorgru/aurora@962a6974312dde57d1f6f5738b4f83e1af9f38a4
