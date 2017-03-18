@@ -36,7 +36,7 @@ type Application struct {
 	hostname     string
 	config       yamlContents
 	Info         info
-	Slack        slack.Slack
+	Slack        *slack.Slack
 }
 
 // Run stackoverflow application
@@ -47,12 +47,6 @@ func (s *Application) Run() {
 	if !s.config.Validate() {
 		s.config.Reconfigure()
 	}
-
-	// Configure slack
-	stackoverflow.Slack = *slack.Load()
-	stackoverflow.Slack.SetHost(stackoverflow.config.Slack.APIHost)
-	stackoverflow.Slack.SetToken(stackoverflow.config.Slack.Token)
-	stackoverflow.Slack.SetChannel(stackoverflow.config.Slack.Channel)
 
 	// Handle call
 	if _, err := parser.Parse(); err != nil {
@@ -95,6 +89,24 @@ func (s *Application) Close(code int) {
 	std.Body("Date: %s", date)
 	std.Hr()
 	os.Exit(code)
+}
+
+func (s *Application) SessionRefresh() {
+
+	// Set Log Level from -v or -d flag default to config.Data.Slackoverflow.LogLevel
+	UpdateLogLevel()
+
+	// Load Slack Client
+	if stackoverflow.Slack != nil {
+		// Configure slack
+		stackoverflow.Slack = slack.Load()
+		stackoverflow.Slack.SetHost(stackoverflow.config.Slack.APIHost)
+		stackoverflow.Slack.SetToken(stackoverflow.config.Slack.Token)
+		stackoverflow.Slack.SetChannel(stackoverflow.config.Slack.Channel)
+	} else {
+		Debug("Slack Client is already loaded.")
+	}
+
 }
 
 // Start session
