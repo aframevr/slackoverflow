@@ -7,7 +7,7 @@ import (
 )
 
 // ListChannels lists available Slack channels
-func (s *Slack) ListChannels() bool {
+func (s *Client) ListChannels() bool {
 
 	qp := make(std.QueryParams)
 	qp.Add("token", s.token)
@@ -37,11 +37,12 @@ func (s *Slack) ListChannels() bool {
 
 // ChannelList list all active channels
 type ChannelList struct {
-	Channels []SlChannel `json:"channels"`
+	Channels []ChannelLimited `json:"channels"`
 }
 
-// SlChannel slack channel
-type SlChannel struct {
+// ChannelLimited slack channel
+// https://api.slack.com/methods/channels.list
+type ChannelLimited struct {
 	ID         string `json:"id"`
 	Name       string `json:"name"`
 	Created    int    `json:"created"`

@@ -36,7 +36,7 @@ type yamlContents struct {
 
 // Validate configuration
 func (yamlContents *yamlContents) Validate() bool {
-	if err := yamlContents.readConfig(stackoverflow.configFile); err != nil {
+	if err := yamlContents.readConfig(slackoverflow.configFile); err != nil {
 		Warning("Stackoverflow is not configured")
 		return false
 	}
@@ -45,8 +45,8 @@ func (yamlContents *yamlContents) Validate() bool {
 
 // Create new configuration file
 func (yamlContents *yamlContents) Reconfigure() {
-	Info("Configuration location set to: %s", stackoverflow.projectPath)
-	os.MkdirAll(stackoverflow.projectPath, os.ModePerm)
+	Info("Configuration location set to: %s", slackoverflow.projectPath)
+	os.MkdirAll(slackoverflow.projectPath, os.ModePerm)
 
 	reader := bufio.NewReader(os.Stdin)
 
@@ -102,11 +102,11 @@ func (yamlContents *yamlContents) Reconfigure() {
 	slackToken, _ := reader.ReadString('\n')
 	yamlContents.Slack.Token = strings.TrimSpace(slackToken)
 
-	stackoverflow.Slack.SetHost(yamlContents.Slack.APIHost)
-	stackoverflow.Slack.SetToken(yamlContents.Slack.Token)
+	slackoverflow.Slack.SetHost(yamlContents.Slack.APIHost)
+	slackoverflow.Slack.SetToken(yamlContents.Slack.Token)
 
 	// Print the available channel list
-	hasChannels := stackoverflow.Slack.ListChannels()
+	hasChannels := slackoverflow.Slack.ListChannels()
 	if !hasChannels {
 		Emergency("Unable to fetch any channels with provided credentials")
 	}
@@ -115,7 +115,7 @@ func (yamlContents *yamlContents) Reconfigure() {
 	Notice("Enter Channel ID which you want to post the questions")
 	slackChannel, _ := reader.ReadString('\n')
 	yamlContents.Slack.Channel = strings.TrimSpace(slackChannel)
-	stackoverflow.Slack.SetChannel(yamlContents.Slack.Channel)
+	slackoverflow.Slack.SetChannel(yamlContents.Slack.Channel)
 
 	// Number of questions to watch
 	std.Hr()
@@ -129,12 +129,12 @@ func (yamlContents *yamlContents) Reconfigure() {
 	// Save configFile
 	std.Hr()
 	contents, _ := yaml.Marshal(&yamlContents)
-	err := ioutil.WriteFile(stackoverflow.configFile, []byte(contents), 0644)
+	err := ioutil.WriteFile(slackoverflow.configFile, []byte(contents), 0644)
 	if err != nil {
-		Emergency("Failed to write: %s", stackoverflow.configFile)
+		Emergency("Failed to write: %s", slackoverflow.configFile)
 	}
 
-	Ok("Configuration saved: %s", stackoverflow.configFile)
+	Ok("Configuration saved: %s", slackoverflow.configFile)
 
 }
 

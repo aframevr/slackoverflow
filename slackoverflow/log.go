@@ -23,39 +23,39 @@ const (
 func UpdateLogLevel() {
 	// Set log level from Flag
 	if argv.Debug {
-		stackoverflow.logLevel = DEBUG
+		slackoverflow.logLevel = DEBUG
 		std.Body("Becoming very verbose. Set log level to DEBUG")
 	} else if argv.Verbose {
-		stackoverflow.logLevel = INFO
+		slackoverflow.logLevel = INFO
 		// Even though Debug will ignore output when debug level is not Set
 		// we still can run that here only if needed
 		std.Body("Becoming verbose. Set loglevel to loglevel INFO")
 	} else {
 
-		switch stackoverflow.config.SlackOverflow.LogLevel {
+		switch slackoverflow.config.SlackOverflow.LogLevel {
 		case "EMERGENCY":
-			stackoverflow.logLevel = EMERGENCY
+			slackoverflow.logLevel = EMERGENCY
 			std.Body("Set loglevel to loglevel EMERGENCY")
 		case "ALERT":
-			stackoverflow.logLevel = ALERT
+			slackoverflow.logLevel = ALERT
 			std.Body("Set loglevel to loglevel ALERT")
 		case "CRITICAL":
-			stackoverflow.logLevel = CRITICAL
+			slackoverflow.logLevel = CRITICAL
 			std.Body("Set loglevel to loglevel CRITICAL")
 		case "ERROR":
-			stackoverflow.logLevel = ERROR
+			slackoverflow.logLevel = ERROR
 			std.Body("Set loglevel to loglevel ERROR")
 		case "WARNING":
-			stackoverflow.logLevel = WARNING
+			slackoverflow.logLevel = WARNING
 			std.Body("Set loglevel to loglevel WARNING")
 		case "INFO":
-			stackoverflow.logLevel = INFO
+			slackoverflow.logLevel = INFO
 			std.Body("Becoming verbose. Set loglevel to loglevel INFO")
 		case "DEBUG":
-			stackoverflow.logLevel = DEBUG
+			slackoverflow.logLevel = DEBUG
 			std.Body("Becoming very verbose. Set loglevel to loglevel DEBUG")
 		default:
-			stackoverflow.logLevel = NOTICE
+			slackoverflow.logLevel = NOTICE
 			std.Body("Becoming verbose. Set loglevel to loglevel NOTICE")
 		}
 	}
@@ -66,7 +66,7 @@ func Emergency(format string, a ...interface{}) {
 	prefix := fmt.Sprintf(" emergency %s ", aurora.Red("\u2718").Bold())
 	msg := std.GetWithPrefix(prefix, format, a...)
 	fmt.Println(msg)
-	stackoverflow.Close(1)
+	slackoverflow.Close(1)
 }
 
 // Alert message
@@ -106,7 +106,7 @@ func Ok(format string, a ...interface{}) {
 
 // Notice message
 func Notice(format string, a ...interface{}) {
-	if stackoverflow.logLevel < 300 {
+	if slackoverflow.logLevel < 300 {
 		prefix := fmt.Sprintf(" notice    %s ", aurora.Cyan("\u26A0").Bold())
 		msg := std.GetWithPrefix(prefix, format, a...)
 		fmt.Println(msg)
@@ -115,7 +115,7 @@ func Notice(format string, a ...interface{}) {
 
 // Info message
 func Info(format string, a ...interface{}) {
-	if stackoverflow.logLevel < 250 {
+	if slackoverflow.logLevel < 250 {
 		prefix := fmt.Sprintf(" info      %s ", aurora.Blue("!").Bold())
 		msg := std.GetWithPrefix(prefix, format, a...)
 		fmt.Println(msg)
@@ -124,7 +124,7 @@ func Info(format string, a ...interface{}) {
 
 // Debug message
 func Debug(format string, a ...interface{}) {
-	if stackoverflow.logLevel == 100 {
+	if slackoverflow.logLevel == 100 {
 		prefix := fmt.Sprintf(" debug     %s ", aurora.Gray("\u2699").Bold())
 		msg := std.GetWithPrefix(prefix, format, a...)
 		fmt.Println(msg)
@@ -133,7 +133,7 @@ func Debug(format string, a ...interface{}) {
 
 // DebugArray message
 func DebugArray(dbg map[string]interface{}) {
-	if stackoverflow.logLevel == 100 {
+	if slackoverflow.logLevel == 100 {
 		fmt.Println(fmt.Sprintf(" debug     %s: %+v", aurora.Gray("\u2699").Bold(), dbg))
 	}
 }

@@ -10,6 +10,6 @@ type cmdSlackChannels struct{}
 // Execute
 func (slack *cmdSlackChannels) Execute(args []string) error {
 	// Refresh the session before running this command
-	stackoverflow.Slack.ListChannels()
+	slackoverflow.Slack.ListChannels()
 	return nil
 }
