@@ -101,6 +101,9 @@ func (yc *yamlContents) ConfigureSlackOverflow() {
 	std.Hr()
 	std.Body("Configuring Slack Overflow")
 
+	// Force to reload the configuration file if exists
+	yc.IsConfigured()
+
 	reader := bufio.NewReader(os.Stdin)
 	// Log level
 
@@ -133,6 +136,9 @@ func (yc *yamlContents) ConfigureSlackOverflow() {
 func (yc *yamlContents) ConfigureStackExchange() {
 	std.Hr()
 	std.Body("Configuring Stack Exchange API Client")
+
+	// Force to reload the configuration file if exists
+	yc.IsConfigured()
 
 	reader := bufio.NewReader(os.Stdin)
 
@@ -182,6 +188,9 @@ func (yc *yamlContents) ConfigureStackExchange() {
 func (yc *yamlContents) ConfigureSlack() {
 	std.Hr()
 	std.Body("Configuring Slack API Client")
+
+	// Force to reload the configuration file if exists
+	yc.IsConfigured()
 
 	reader := bufio.NewReader(os.Stdin)
 

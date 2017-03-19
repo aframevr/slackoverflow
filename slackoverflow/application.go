@@ -126,30 +126,30 @@ func (so *Application) SessionRefresh() {
 		if err != nil {
 			Emergency(err.Error())
 		}
-		Ok("SQLite3 Database loaded: %s", so.databaseFile)
+		Debug("SQLite3 Database loaded: %s", so.databaseFile)
 
 		// Check does the StackQuestion table exist
 		err = so.SQLite3.VerifyTable("StackExchangeQuestion")
 		if err != nil {
 			Emergency("Table StackExchangeQuestion: %q", err)
 		}
-		Ok("Table: StackExchangeQuestion exists.")
+		Debug("Table: StackExchangeQuestion exists.")
 
 		// Check does the SlackQuestion table exist
 		err = so.SQLite3.VerifyTable("SlackQuestion")
 		if err != nil {
 			Emergency("Table SlackQuestion: %q", err)
 		}
-		Ok("Table: SlackQuestion exists.")
+		Debug("Table: SlackQuestion exists.")
 
 		// Check does the StackExchangeUser table exist
 		err = so.SQLite3.VerifyTable("StackExchangeUser")
 		if err != nil {
 			Emergency("Table StackExchangeUser: %q", err)
 		}
-		Ok("Table: StackExchangeUser exists.")
+		Debug("Table: StackExchangeUser exists.")
 	} else {
-		Ok("SQLite3 Database is already loaded.")
+		Debug("SQLite3 Database is already loaded.")
 	}
 
 	// Load Stack Exchange Client
