@@ -2,6 +2,7 @@ package sqlite3
 
 import (
 	"database/sql"
+	"fmt"
 
 	// Importing database driver
 	_ "github.com/mattn/go-sqlite3"
@@ -9,14 +10,15 @@ import (
 
 // Client resource
 type Client struct {
-	path    string
-	DB      *sql.DB
-	Schemas SlackOverflowSchemas
+	path string
+	DB   *sql.DB
 }
+
+var sqlite *Client
 
 // Load SQLite3 client
 func Load(path string) (*Client, error) {
-	sqlite := &Client{
+	sqlite = &Client{
 		path: path,
 	}
 
@@ -27,37 +29,37 @@ func Load(path string) (*Client, error) {
 		return nil, err
 	}
 
-	// Load schemas
-	sqlite.Schemas.loadSchemas()
-
 	return sqlite, nil
 }
 
 // VerifyTable creates new table if one does not exist
 func (sqlite3 *Client) VerifyTable(table string) error {
 	switch table {
+	// Create SlackQuestion table if needed
+	case "SlackQuestion":
+		_, err := sqlite3.DB.Exec(SlackQuestion{}.GetSchema())
+		if err != nil {
+			return err
+		}
+		break
 
-	// Create StackQuestion table if needed
-	case "StackQuestion":
-		_, err := sqlite3.DB.Exec(sqlite3.Schemas.StackQuestion)
+	// Create StackExchangeQuestion table if needed
+	case "StackExchangeQuestion":
+		_, err := sqlite3.DB.Exec(StackExchangeQuestion{}.GetSchema())
 		if err != nil {
 			return err
 		}
 		break
-	// Create StackQuestionLink table if needed
-	case "StackQuestionLink":
-		_, err := sqlite3.DB.Exec(sqlite3.Schemas.StackQuestionLink)
+
+	// Create StackExchangeUser tablr if needed
+	case "StackExchangeUser":
+		_, err := sqlite3.DB.Exec(StackExchangeUser{}.GetSchema())
 		if err != nil {
 			return err
 		}
 		break
-	// Create StackUser tablr if needed
-	case "StackUser":
-		_, err := sqlite3.DB.Exec(sqlite3.Schemas.StackUser)
-		if err != nil {
-			return err
-		}
-		break
+	default:
+		return fmt.Errorf("Unknown table %s", table)
 	}
 	return nil
 }

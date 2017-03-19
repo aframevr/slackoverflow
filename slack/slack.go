@@ -1,5 +1,7 @@
 package slack
 
+var slack *Client
+
 // Client Slack API Client resource
 type Client struct {
 	channel string
@@ -9,7 +11,8 @@ type Client struct {
 
 // Load slack
 func Load() *Client {
-	return &Client{}
+	slack = &Client{}
+	return slack
 }
 
 // SetToken set Slack API Token

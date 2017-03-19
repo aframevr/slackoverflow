@@ -12,6 +12,9 @@ type cmdConfig struct{}
 
 func (a *cmdConfig) Execute(args []string) error {
 
+	// Refresh the session before running this command and make sure that Slack Overflow is configured
+	slackoverflow.SessionRefresh()
+
 	selfConfig := std.NewTable("SlackOverflow Configuration", " ")
 	selfConfig.AddRow("Log Level", slackoverflow.config.SlackOverflow.LogLevel)
 	selfConfig.AddRow("Number of Questions to watch", strconv.Itoa(slackoverflow.config.SlackOverflow.Watch))
@@ -43,8 +46,8 @@ func (a *cmdConfig) Execute(args []string) error {
 
 	stackexchange.AddRow("Key", slackoverflow.config.StackExchange.Key)
 
-	stackexchange.AddRow("Site", slackoverflow.config.StackExchange.Parameters.Site)
-	stackexchange.AddRow("Tagged", slackoverflow.config.StackExchange.Parameters.Tagged)
+	stackexchange.AddRow("Site", slackoverflow.config.StackExchange.SearchAdvanced["site"])
+	stackexchange.AddRow("Tagged", slackoverflow.config.StackExchange.SearchAdvanced["tagged"])
 	stackexchange.Print()
 
 	return nil

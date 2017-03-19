@@ -47,11 +47,6 @@ type Application struct {
 func (so *Application) Run() {
 	so.Banner()
 
-	// Check configuration
-	if !so.config.Validate() {
-		so.config.Reconfigure()
-	}
-
 	// Handle call
 	if _, err := parser.Parse(); err != nil {
 		// Failure was fine since -h or --help flag was provided
@@ -103,16 +98,22 @@ func (so *Application) Close(code int) {
 // SessionRefresh refresh session and makes sure that all deps are loaded
 func (so *Application) SessionRefresh() {
 
+	// Check configuration
+	if !so.config.IsConfigured() {
+		Emergency("You must execute 'slackoverflow reconfigure' or correct errors in ~/.slackoverflow/slackoverflow.yaml")
+	}
+
 	// Set Log Level from -v or -d flag default to config.Data.SlackOverflow.LogLevel
 	UpdateLogLevel()
 
 	// Load Slack Client
-	if so.Slack != nil {
+	if so.Slack == nil {
 		// Configure slack
 		so.Slack = slack.Load()
 		so.Slack.SetHost(so.config.Slack.APIHost)
 		so.Slack.SetToken(so.config.Slack.Token)
 		so.Slack.SetChannel(so.config.Slack.Channel)
+		Debug("Slack Client is loaded.")
 	} else {
 		Debug("Slack Client is already loaded.")
 	}
@@ -128,40 +129,47 @@ func (so *Application) SessionRefresh() {
 		Ok("SQLite3 Database loaded: %s", so.databaseFile)
 
 		// Check does the StackQuestion table exist
-		err = so.SQLite3.VerifyTable("StackQuestion")
+		err = so.SQLite3.VerifyTable("StackExchangeQuestion")
 		if err != nil {
-			Emergency("Table StackQuestion: %q", err)
+			Emergency("Table StackExchangeQuestion: %q", err)
 		}
-		Ok("Table: StackQuestion exists.")
+		Ok("Table: StackExchangeQuestion exists.")
 
-		// Check does the StackQuestionLink table exist
-		err = so.SQLite3.VerifyTable("StackQuestionLink")
+		// Check does the SlackQuestion table exist
+		err = so.SQLite3.VerifyTable("SlackQuestion")
 		if err != nil {
-			Emergency("Table StackQuestionLink: %q", err)
+			Emergency("Table SlackQuestion: %q", err)
 		}
-		Ok("Table: StackQuestionLink exists.")
+		Ok("Table: SlackQuestion exists.")
 
-		// Check does the StackUser table exist
-		err = so.SQLite3.VerifyTable("StackUser")
+		// Check does the StackExchangeUser table exist
+		err = so.SQLite3.VerifyTable("StackExchangeUser")
 		if err != nil {
-			Emergency("Table StackUser: %q", err)
+			Emergency("Table StackExchangeUser: %q", err)
 		}
-		Ok("Table: StackQuestionLink exists.")
-
+		Ok("Table: StackExchangeUser exists.")
 	} else {
-		Ok("Table: StackUser exists.")
+		Ok("SQLite3 Database is already loaded.")
 	}
 
 	// Load Stack Exchange Client
 	// Load Slack Client
-	if so.StackExchange != nil {
+	if so.StackExchange == nil {
 		// Configure slack
 		so.StackExchange = stackexchange.Load()
-		so.StackExchange.SetHost(so.config.StackExchange.APIVersion)
+		so.StackExchange.SetHost(so.config.StackExchange.APIHost)
+		so.StackExchange.SetAPIVersion(so.config.StackExchange.APIVersion)
+		so.StackExchange.SetAPIKey(so.config.StackExchange.Key)
 
+		Debug("Stack Exchange Client is loaded.")
 	} else {
-		Debug("Slack Client is already loaded.")
+		Debug("Stack Exchange Client is already loaded.")
 	}
+}
+
+// Debugging Either is debugging enabled or not
+func (so *Application) Debugging() bool {
+	return so.logLevel == 100
 }
 
 // Start session

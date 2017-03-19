@@ -8,9 +8,9 @@ type cmdReconfigure struct{}
 
 func (a *cmdReconfigure) Execute(args []string) error {
 
-	doReconfigure := std.AskForConfirmation("This will overwrite current configuration, Are you sure you want to continue?")
+	doReconfigure := std.AskForConfirmation("Start interactive confguration?")
 	if doReconfigure {
-		slackoverflow.config.Reconfigure()
+		slackoverflow.config.ReconfigureAll()
 		Ok("Reconfiguration done")
 	} else {
 		Warning("Reconfiguration canceled!")
