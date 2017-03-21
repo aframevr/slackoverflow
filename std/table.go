@@ -1,6 +1,7 @@
 package std
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/logrusorgru/aurora"
@@ -32,10 +33,11 @@ func NewTable(h ...string) *Table {
 }
 
 // AddRow to the table
-func (t *Table) AddRow(a ...string) {
+func (t *Table) AddRow(a ...interface{}) {
 	if t.colCount == len(a) {
 		row := []TableCol{}
-		for i, rowCol := range a {
+		for i, rowColRaw := range a {
+			rowCol := fmt.Sprintf("%v", rowColRaw)
 			colLen := len(rowCol)
 			col := TableCol{rowCol, colLen}
 			if colLen > t.cols[i].colLenght {

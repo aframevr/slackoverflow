@@ -46,7 +46,7 @@ func (a *cmdConfig) Execute(args []string) error {
 
 	stackexchange.AddRow("Key", slackoverflow.config.StackExchange.Key)
 
-	stackexchange.AddRow("Site", slackoverflow.config.StackExchange.SearchAdvanced["site"])
+	stackexchange.AddRow("Site", slackoverflow.config.StackExchange.Site)
 	stackexchange.AddRow("Tagged", slackoverflow.config.StackExchange.SearchAdvanced["tagged"])
 	stackexchange.Print()
 

@@ -8,6 +8,24 @@ import (
 	"net/url"
 )
 
+// HTTPGetByURL make Get request
+func HTTPGetByURL(url string, collection interface{}) error {
+
+	client := &http.Client{
+		Transport: http.DefaultTransport,
+	}
+
+	response, err := client.Get(url)
+
+	if err != nil {
+		return err
+	}
+
+	err = readResponse(response, &collection)
+
+	return err
+}
+
 // HTTPGet make Get request
 func HTTPGet(host string, path string, qp map[string]string, collection interface{}) error {
 

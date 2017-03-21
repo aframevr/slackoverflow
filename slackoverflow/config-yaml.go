@@ -16,7 +16,7 @@ import (
 // Yaml mapping to yaml configuration
 type yamlContents struct {
 	SlackOverflow struct {
-		LogLevel string `yaml:"log_level"`
+		LogLevel string `yaml:"log-level"`
 		Watch    int    `yaml:"watch"`
 	} `yaml:"slackoverflow"`
 	Slack struct {
@@ -26,11 +26,14 @@ type yamlContents struct {
 		APIHost string `yaml:"api-host"`
 	} `yaml:"slack"`
 	StackExchange struct {
-		Enabled        bool              `yaml:"enabled"`
-		Key            string            `yaml:"key"`
-		APIVersion     string            `yaml:"api-version"`
-		APIHost        string            `yaml:"api-host"`
-		SearchAdvanced map[string]string `yaml:"search-advanced"`
+		Enabled          bool              `yaml:"enabled"`
+		Key              string            `yaml:"key"`
+		APIVersion       string            `yaml:"api-version"`
+		APIHost          string            `yaml:"api-host"`
+		Site             string            `yaml:"site"`
+		QuestionsToWatch int               `yaml:"questions-to-watch"`
+		SearchAdvanced   map[string]string `yaml:"search-advanced"`
+		Questions        map[string]string `yaml:"questions"`
 	} `yaml:"stackexchange"`
 }
 
@@ -119,14 +122,6 @@ func (yc *yamlContents) ConfigureSlackOverflow() {
 	std.Hr()
 	yc.SlackOverflow.LogLevel = strings.TrimSpace(logLevel)
 
-	// Number of questions to watch
-	std.Hr()
-	std.Body("Set the value for how many latest questions you want to track and update.")
-	std.Body("Good value is (25) which means that besides checking new qustions in defined stack exchange site")
-	std.Body("also last (n) questions will be checked for comment count, view count, answer count, score and is question accepted or not.")
-	std.Body("Emoijs of these stats will be removed from older than (n) questions.")
-	std.Hr()
-	fmt.Scan(&yc.SlackOverflow.Watch)
 	yc.Save()
 	Ok("Slack Overflow is configured")
 	std.Hr()
@@ -157,7 +152,7 @@ func (yc *yamlContents) ConfigureStackExchange() {
 	std.Body("For full list of available sites check: http://stackexchange.com/sites")
 	std.Hr()
 	site, _ := reader.ReadString('\n')
-	yc.StackExchange.SearchAdvanced["site"] = strings.TrimSpace(site)
+	yc.StackExchange.Site = strings.TrimSpace(site)
 
 	// Set tagged parameter value for Stack Exchange search advanced
 	std.Hr()
@@ -166,6 +161,15 @@ func (yc *yamlContents) ConfigureStackExchange() {
 	std.Hr()
 	tagged, _ := reader.ReadString('\n')
 	yc.StackExchange.SearchAdvanced["tagged"] = strings.TrimSpace(tagged)
+
+	// Number of questions to watch
+	std.Hr()
+	std.Body("Set the value for how many latest questions you want to track and update.")
+	std.Body("Good value is (25) which means that besides checking new qustions in defined stack exchange site")
+	std.Body("also last (n) questions will be checked for comment count, view count, answer count, score and is question accepted or not.")
+	std.Body("Emoijs of these stats will be removed from older than (n) questions.")
+	std.Hr()
+	fmt.Scan(&yc.StackExchange.QuestionsToWatch)
 
 	// stackexchange clientKey
 	std.Hr()
