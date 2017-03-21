@@ -12,7 +12,7 @@ before_install:
   - rsync -az ${TRAVIS_BUILD_DIR}/ $HOME/gopath/src/github.com/aframevr/slackoverflow/
   - export TRAVIS_BUILD_DIR=$HOME/gopath/src/github.com/aframevr/slackoverflow
   - cd $HOME/gopath/src/github.com/aframevr/slackoverflow
-  
+
 install:
   - make dependencies
 
