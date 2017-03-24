@@ -279,3 +279,62 @@ func (seq StackExchangeQuestion) TrackedIds(qToWatch int) (ids string, count int
 
 	return ids, count
 }
+
+// Tracked returns tracked questions
+func (StackExchangeQuestion) Tracked(qToWatch int) (questions []StackExchangeQuestion, count int) {
+
+	count = 0
+
+	stmt, err := sqlite.DB.Prepare(`SELECT * FROM StackExchangeQuestion ORDER BY creationDate DESC LIMIT ?`)
+	if err != nil {
+		return questions, count
+	}
+	rows, err := stmt.Query(qToWatch)
+	if err != nil {
+		return questions, count
+	}
+	defer stmt.Close()
+
+	for rows.Next() {
+		q := StackExchangeQuestion{}
+		err = rows.Scan(
+			&q.QID,
+			&q.UID,
+			&q.Title,
+			&q.CreationDate,
+			&q.LastActivityDate,
+			&q.ShareLink,
+			&q.ClosedReason,
+			&q.Tags,
+			&q.Site,
+			&q.IsAnswered,
+			&q.Score,
+			&q.ViewCount,
+			&q.AnswerCount,
+			&q.CommentCount,
+			&q.UpVoteCount,
+			&q.DownVoteCount,
+			&q.DeleteVoteCount,
+			&q.FavoriteCount,
+			&q.ReOpenVoteCount)
+		if err != nil {
+			log.Fatal(err)
+		}
+		// in case of only one question asign that to idsMap
+		questions = append(questions, q)
+		count++
+	}
+
+	return questions, count
+}
+
+// Delete Question by ID
+func (seq *StackExchangeQuestion) Delete() error {
+	stmt, err := sqlite.DB.Prepare(`DELETE FROM StackExchangeQuestion WHERE QID = ?`)
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(seq.QID)
+	defer stmt.Close()
+	return err
+}

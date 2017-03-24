@@ -13,7 +13,7 @@ type cmdConfig struct{}
 func (a *cmdConfig) Execute(args []string) error {
 
 	// Refresh the session before running this command and make sure that Slack Overflow is configured
-	slackoverflow.SessionRefresh()
+	slackoverflow.SessionRefresh(false)
 
 	selfConfig := std.NewTable("SlackOverflow Configuration", " ")
 	selfConfig.AddRow("Log Level", slackoverflow.config.SlackOverflow.LogLevel)

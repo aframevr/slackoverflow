@@ -86,6 +86,10 @@ dependencies: ## Install SlackOverflow build dependencies
 	@govendor fetch github.com/jessevdk/go-flags@=v1.1.0
 	$(call log_ok, github.com/jessevdk/go-flags@=v1.1.0)
 
+	$(call log_info, Install Slack API in Go.)
+	@govendor fetch github.com/nlopes/slack
+	$(call log_ok, github.com/nlopes/slack)
+
 ################################################################################
 # Contributors
 contributors: ## Update contributors list

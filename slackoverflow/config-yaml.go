@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aframevr/slackoverflow/slack"
 	"github.com/aframevr/slackoverflow/std"
+	"github.com/nlopes/slack"
 
 	yaml "github.com/go-yaml/yaml"
 )
@@ -213,14 +213,27 @@ func (yc *yamlContents) ConfigureSlack() {
 	// Print the available channel list
 	std.Hr()
 	Info("Fetching available Slack channels.")
-	slackoverflow.Slack = slack.Load()
-	slackoverflow.Slack.SetHost(yc.Slack.APIHost)
-	slackoverflow.Slack.SetToken(yc.Slack.Token)
-	hasChannels := slackoverflow.Slack.ListChannels()
-	if !hasChannels {
-		Emergency("Unable to fetch any channels with provided credentials")
+
+	slackoverflow.Slack = slack.New(yc.Slack.Token)
+	channels, err := slackoverflow.Slack.GetChannels(true)
+	if err != nil {
+		std.Msg("Unable to fetch any channels")
+
 	}
 
+	if len(channels) > 0 {
+		channelList := std.NewTable("ID", "Name", "Created")
+		for _, channel := range channels {
+			channelList.AddRow(
+				channel.ID,
+				channel.Name,
+				fmt.Sprintf("%d", channel.Created),
+			)
+		}
+		channelList.Print()
+	} else {
+		Emergency("Unable to fetch any channels with provided credentials")
+	}
 	// Slack channel
 	std.Hr()
 	std.Body("Enter Channel ID which you want to post the questions")

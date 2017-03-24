@@ -8,7 +8,14 @@ type cmdRun struct{}
 func (a *cmdRun) Execute(args []string) error {
 
 	// Refresh the session before running this command
-	slackoverflow.SessionRefresh()
+	slackoverflow.SessionRefresh(true)
+	stackechangeSync := cmdStackExchangeQuestions{}
+	stackechangeSync.All = true
+	stackechangeSync.Execute(args)
+
+	slackSync := cmdSlackQuestions{}
+	slackSync.All = true
+	slackSync.Execute(args)
 
 	return nil
 }

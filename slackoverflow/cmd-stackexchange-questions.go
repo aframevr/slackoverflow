@@ -17,7 +17,7 @@ type cmdStackExchangeQuestions struct {
 func (cse *cmdStackExchangeQuestions) Execute(args []string) error {
 
 	// Refresh the session before running this command and make sure that Slack Overflow is configured
-	slackoverflow.SessionRefresh()
+	slackoverflow.SessionRefresh(true)
 
 	if !slackoverflow.config.StackExchange.Enabled {
 		Notice("Running Stack Exchange related commands is disabled in configuration file. Skipping.")
@@ -89,17 +89,20 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 			for _, q := range searchAdvanced.Result.Items {
 				std.Body("Question: %s", q.Title)
 				std.Body("Url:      %s", q.ShareLink)
-				newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
-				newq.AddRow(
-					q.QID,
-					time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
-					q.AnswerCount,
-					q.CommentCount,
-					q.Score,
-					q.ViewCount,
-					q.Owner.DisplayName,
-				)
-				newq.Print()
+				if slackoverflow.Debugging() {
+					newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
+					newq.AddRow(
+						q.QID,
+						time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
+						q.AnswerCount,
+						q.CommentCount,
+						q.Score,
+						q.ViewCount,
+						q.Owner.DisplayName,
+					)
+					newq.Print()
+				}
+
 				cse.syncQuestion(q)
 				std.Hr()
 			}
@@ -167,17 +170,19 @@ func (cse *cmdStackExchangeQuestions) updateQuestions() {
 			for _, q := range updateQuestions.Result.Items {
 				std.Body("Question: %s", q.Title)
 				std.Body("Url:      %s", q.ShareLink)
-				newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
-				newq.AddRow(
-					q.QID,
-					time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
-					q.AnswerCount,
-					q.CommentCount,
-					q.Score,
-					q.ViewCount,
-					q.Owner.DisplayName,
-				)
-				newq.Print()
+				if slackoverflow.Debugging() {
+					newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
+					newq.AddRow(
+						q.QID,
+						time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
+						q.AnswerCount,
+						q.CommentCount,
+						q.Score,
+						q.ViewCount,
+						q.Owner.DisplayName,
+					)
+					newq.Print()
+				}
 				cse.syncQuestion(q)
 				std.Hr()
 			}

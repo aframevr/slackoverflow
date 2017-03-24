@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/aframevr/slackoverflow/slack"
 	"github.com/aframevr/slackoverflow/sqlite3"
 	"github.com/aframevr/slackoverflow/stackexchange"
 	"github.com/aframevr/slackoverflow/std"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/logrusorgru/aurora"
+	"github.com/nlopes/slack"
 )
 
 // User Session object
@@ -96,23 +96,24 @@ func (so *Application) Close(code int) {
 }
 
 // SessionRefresh refresh session and makes sure that all deps are loaded
-func (so *Application) SessionRefresh() {
+func (so *Application) SessionRefresh(soft bool) {
 
 	// Check configuration
 	if !so.config.IsConfigured() {
 		Emergency("You must execute 'slackoverflow reconfigure' or correct errors in ~/.slackoverflow/slackoverflow.yaml")
 	}
 
+	if soft && so.Slack != nil && so.SQLite3 != nil && so.StackExchange != nil {
+		return
+	}
 	// Set Log Level from -v or -d flag default to config.Data.SlackOverflow.LogLevel
 	UpdateLogLevel()
 
 	// Load Slack Client
 	if so.Slack == nil {
 		// Configure slack
-		so.Slack = slack.Load()
-		so.Slack.SetHost(so.config.Slack.APIHost)
-		so.Slack.SetToken(so.config.Slack.Token)
-		so.Slack.SetChannel(so.config.Slack.Channel)
+		so.Slack = slack.New(so.config.Slack.Token)
+
 		Debug("Slack Client is loaded.")
 	} else {
 		Debug("Slack Client is already loaded.")
