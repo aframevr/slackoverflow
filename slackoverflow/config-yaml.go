@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/aframevr/slackoverflow/slack"
 	"github.com/aframevr/slackoverflow/std"
-	"github.com/nlopes/slack"
 
 	yaml "github.com/go-yaml/yaml"
 )
@@ -214,7 +214,8 @@ func (yc *yamlContents) ConfigureSlack() {
 	std.Hr()
 	Info("Fetching available Slack channels.")
 
-	slackoverflow.Slack = slack.New(yc.Slack.Token)
+	slackoverflow.Slack = slack.Load()
+	slackoverflow.Slack.SetToken(yc.Slack.Token)
 	channels, err := slackoverflow.Slack.GetChannels(true)
 	if err != nil {
 		std.Msg("Unable to fetch any channels")

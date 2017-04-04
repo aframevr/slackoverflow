@@ -3,8 +3,8 @@ package slackoverflow
 import (
 	"fmt"
 
+	"github.com/aframevr/slackoverflow/slack"
 	"github.com/aframevr/slackoverflow/sqlite3"
-	"github.com/nlopes/slack"
 )
 
 const (
@@ -172,7 +172,7 @@ func (sl *cmdSlackQuestions) updateQuestions() {
 			}
 
 			params.Attachments = []slack.Attachment{attachment}
-			channelID, _, _, err := slackoverflow.Slack.UpdateMessage(slackoverflow.config.Slack.Channel, params)
+			channelID, _, _, err := slackoverflow.Slack.UpdateMessageWithAttachments(slackoverflow.config.Slack.Channel, params)
 			if err != nil {
 				Error("Slack channel (%s): %s", channelID, err.Error())
 			} else {
@@ -194,7 +194,7 @@ func (sl *cmdSlackQuestions) updateQuestions() {
 				Color:     color,
 			}
 			params.Attachments = []slack.Attachment{attachment}
-			channelID, _, _, err := slackoverflow.Slack.UpdateMessage(slackoverflow.config.Slack.Channel, params)
+			channelID, _, _, err := slackoverflow.Slack.UpdateMessageWithAttachments(slackoverflow.config.Slack.Channel, params)
 			stackQuestion.Delete()
 			ql.Delete()
 			if err != nil {

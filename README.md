@@ -3,6 +3,16 @@
 > Web hook that posts tagged Stack Overflow questions to Slack, updated using reaction emojis  
 > Work in progress...  
 
+## Experimental builds
+
+```
+git clone https://github.com/mkungla/slackoverflow.git $GOPATH/src/github.com/aframevr/slackoverflow
+cd $GOPATH/src/github.com/aframevr/slackoverflow
+make dependencies
+make install
+```
+
+
 [![GitHub license][license-image]][license-url]
 [![Build Status][travis-ci-image]][travis-ci-url]
 

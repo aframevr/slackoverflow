@@ -43,7 +43,7 @@ help: ## Show this help menu
 # Build
 slackoverflow: ## Build new SlackOverflow binary
 	$(call log_info, build new SlackOverflow binary)
-	go build -ldflags "${SLACKOVERFLOW_LDFLAGS}" -o ${SLACKOVERFLOW_BINARY}
+	go build -a -ldflags "${SLACKOVERFLOW_LDFLAGS}" -o ${SLACKOVERFLOW_BINARY}
 	$(call log_ok, new binary ready)
 
 ################################################################################
@@ -86,10 +86,6 @@ dependencies: ## Install SlackOverflow build dependencies
 	@govendor fetch github.com/jessevdk/go-flags@=v1.1.0
 	$(call log_ok, github.com/jessevdk/go-flags@=v1.1.0)
 
-	$(call log_info, Install Slack API in Go.)
-	@govendor fetch github.com/nlopes/slack
-	$(call log_ok, github.com/nlopes/slack)
-
 ################################################################################
 # Contributors
 contributors: ## Update contributors list
@@ -107,4 +103,4 @@ clean: ## Remove existing binary if exists
 	if [ -f ${SLACKOVERFLOW_BINARY} ]; then rm ${SLACKOVERFLOW_BINARY}; fi
 	$(call log_ok, SlackOverflow old binary removed)
 
-.PHONY: clean install
+.PHONY: clean slackoverflow

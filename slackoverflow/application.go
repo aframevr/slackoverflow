@@ -8,12 +8,12 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/aframevr/slackoverflow/slack"
 	"github.com/aframevr/slackoverflow/sqlite3"
 	"github.com/aframevr/slackoverflow/stackexchange"
 	"github.com/aframevr/slackoverflow/std"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/logrusorgru/aurora"
-	"github.com/nlopes/slack"
 )
 
 // User Session object
@@ -109,16 +109,6 @@ func (so *Application) SessionRefresh(soft bool) {
 	// Set Log Level from -v or -d flag default to config.Data.SlackOverflow.LogLevel
 	UpdateLogLevel()
 
-	// Load Slack Client
-	if so.Slack == nil {
-		// Configure slack
-		so.Slack = slack.New(so.config.Slack.Token)
-
-		Debug("Slack Client is loaded.")
-	} else {
-		Debug("Slack Client is already loaded.")
-	}
-
 	// Load SQLite3 Client
 	if so.SQLite3 == nil {
 		var err error
@@ -151,6 +141,18 @@ func (so *Application) SessionRefresh(soft bool) {
 		Debug("Table: StackExchangeUser exists.")
 	} else {
 		Debug("SQLite3 Database is already loaded.")
+	}
+
+	// Load Slack Client
+	if so.Slack == nil {
+		// Configure slack
+		so.Slack = slack.Load()
+		so.Slack.SetToken(so.config.Slack.Token)
+		so.Slack.SetAPIHost(so.config.Slack.APIHost)
+		so.Slack.SetChannel(so.config.Slack.Channel)
+		Debug("Slack Client is loaded.")
+	} else {
+		Debug("Slack Client is already loaded.")
 	}
 
 	// Load Stack Exchange Client

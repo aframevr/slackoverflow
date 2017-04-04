@@ -60,6 +60,15 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 		question.CreationDate = time.Now().UTC().Add(-24 * time.Hour)
 	}
 
+	now := time.Now().UTC().Unix()
+	diff := question.CreationDate.Unix() - now
+	// Allow maximum 48 h old question as from date otherwise we may exhaust
+	// rate limit if last tracked questions fromdata is to far past
+	// and slackoverflow has not been running for a while.
+	if diff > (48 * 60) {
+		question.CreationDate = time.Now().UTC().Add(-24 * time.Hour)
+	}
+
 	Debug("Checking new questions since %s", question.CreationDate.String())
 
 	// Check for New Questions from Stack Exchange
@@ -72,6 +81,7 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 	for param, value := range slackoverflow.config.StackExchange.SearchAdvanced {
 		searchAdvanced.Parameters.Set(param, value)
 	}
+
 	searchAdvanced.Parameters.Set("fromdate", question.CreationDate.Unix()+1)
 
 	// Output query as table
@@ -114,7 +124,7 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 		}
 
 		// Done go to next page
-		if searchAdvanced.HasMore() {
+		if searchAdvanced.HasMore() || searchAdvanced.GetCurrentPageNr() > 10 {
 			searchAdvanced.NextPage()
 		} else {
 			fetchQuestions = false
