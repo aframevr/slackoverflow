@@ -70,7 +70,7 @@ Help Options:
 **`run`**
 > Run SlackOverflow once.
 
-**`slack`**
+**`slack --help`**
 > Slack related commands see slackoverflow slack --help for more info.
 
 **`slack channels`**
@@ -85,7 +85,7 @@ Help Options:
 | `--update` | Update information about questions already posted to slack |
 | `--all` | Get new questions and update information about existing questions |
 
-**`stackexchange`**
+**`stackexchange --help`**
 > Stack Exchange related commands see slackoverflow stackexchange --help for more info.
 
 **`stackexchange questions`**

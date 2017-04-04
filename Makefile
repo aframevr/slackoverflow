@@ -86,6 +86,11 @@ dependencies: ## Install SlackOverflow build dependencies
 	@govendor fetch github.com/jessevdk/go-flags@=v1.1.0
 	$(call log_ok, github.com/jessevdk/go-flags@=v1.1.0)
 
+	$(call log_info, Install cron - a cron library for go .)
+	@govendor fetch github.com/robfig/cron@=v2
+	$(call log_ok, github.com/robfig/cron@=v2)
+
+
 ################################################################################
 # Contributors
 contributors: ## Update contributors list

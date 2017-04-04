@@ -56,7 +56,7 @@ func UpdateLogLevel() {
 			std.Body("Becoming very verbose. Set loglevel to loglevel DEBUG")
 		default:
 			slackoverflow.logLevel = NOTICE
-			std.Body("Becoming verbose. Set loglevel to loglevel NOTICE")
+			std.Body("Set loglevel to loglevel NOTICE")
 		}
 	}
 }
