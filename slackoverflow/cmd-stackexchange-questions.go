@@ -11,7 +11,7 @@ import (
 type cmdStackExchangeQuestions struct {
 	GetNewQuestions bool `long:"get" description:"Get new questions from configured Stack Exchange Site"`
 	UpdateQuestions bool `long:"update" description:"Update information about existing questions"`
-	All             bool `long:"all" description:"Get new questions and update information about existing questions"`
+	Sync            bool `long:"sync" description:"Get new questions and update information about existing questions"`
 }
 
 func (cse *cmdStackExchangeQuestions) Execute(args []string) error {
@@ -35,7 +35,7 @@ func (cse *cmdStackExchangeQuestions) Execute(args []string) error {
 	}
 
 	// Get new questions from configured Stack Exchange Site
-	if cse.All {
+	if cse.Sync {
 		cse.getNewQuestions()
 		cse.updateQuestions()
 	}

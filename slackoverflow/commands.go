@@ -39,7 +39,4 @@ type Commands struct {
 
 	// Validate slackoverflow validate
 	Validate cmdValidate `command:"validate" description:"validate stackoverflow configuration"`
-
-	// Watch slackoverflow watch
-	Watch cmdWatch `command:"watch" description:"Start SlackOverflow daemon in foreground."`
 }

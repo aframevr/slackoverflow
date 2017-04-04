@@ -10,7 +10,7 @@ func (a *cmdRun) Execute(args []string) error {
 	// Refresh the session before running this command
 	slackoverflow.SessionRefresh(true)
 	stackechangeSync := cmdStackExchangeQuestions{}
-	stackechangeSync.All = true
+	stackechangeSync.Sync = true
 	stackechangeSync.Execute(args)
 
 	slackSync := cmdSlackQuestions{}
