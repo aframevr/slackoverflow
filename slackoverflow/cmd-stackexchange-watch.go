@@ -5,7 +5,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/mkungla/slackoverflow/std"
+	"github.com/aframevr/slackoverflow/std"
 	"github.com/robfig/cron"
 )
 

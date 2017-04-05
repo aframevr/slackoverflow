@@ -8,7 +8,7 @@
 ## Install
 
 ```bash
-git clone https://github.com/mkungla/slackoverflow.git $GOPATH/src/github.com/aframevr/slackoverflow
+git clone https://github.com/aframevr/slackoverflow.git $GOPATH/src/github.com/aframevr/slackoverflow
 cd $GOPATH/src/github.com/aframevr/slackoverflow
 make dependencies
 make install
