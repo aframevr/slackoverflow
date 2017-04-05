@@ -57,7 +57,7 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 			slackoverflow.config.StackExchange.SearchAdvanced["tagged"],
 			slackoverflow.config.StackExchange.Site,
 		)
-		question.CreationDate = time.Now().UTC().Add(-24 * time.Hour)
+		question.CreationDate = time.Now().UTC().Add(-1 * time.Hour)
 	}
 
 	now := time.Now().UTC().Unix()
@@ -97,24 +97,26 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 		if results, err := searchAdvanced.Get(); results {
 			// Questions recieved
 			for _, q := range searchAdvanced.Result.Items {
-				std.Body("Question: %s", q.Title)
-				std.Body("Url:      %s", q.ShareLink)
-				if slackoverflow.Debugging() {
-					newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
-					newq.AddRow(
-						q.QID,
-						time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
-						q.AnswerCount,
-						q.CommentCount,
-						q.Score,
-						q.ViewCount,
-						q.Owner.DisplayName,
-					)
-					newq.Print()
+				if !slackoverflow.Quiet {
+					std.Body("Question: %s", q.Title)
+					std.Body("Url:      %s", q.ShareLink)
+					if slackoverflow.Debugging() {
+						newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
+						newq.AddRow(
+							q.QID,
+							time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
+							q.AnswerCount,
+							q.CommentCount,
+							q.Score,
+							q.ViewCount,
+							q.Owner.DisplayName,
+						)
+						newq.Print()
+					}
+					std.Hr()
 				}
 
 				cse.syncQuestion(q)
-				std.Hr()
 			}
 			if err != nil {
 				fetchQuestions = false
@@ -124,7 +126,9 @@ func (cse *cmdStackExchangeQuestions) getNewQuestions() {
 		}
 
 		// Done go to next page
-		if searchAdvanced.HasMore() || searchAdvanced.GetCurrentPageNr() > 10 {
+		if searchAdvanced.GetCurrentPageNr() > 10 {
+			fetchQuestions = false
+		} else if searchAdvanced.HasMore() {
 			searchAdvanced.NextPage()
 		} else {
 			fetchQuestions = false
@@ -178,23 +182,25 @@ func (cse *cmdStackExchangeQuestions) updateQuestions() {
 		if results, err := updateQuestions.Get(questionIds); results {
 			// Questions recieved
 			for _, q := range updateQuestions.Result.Items {
-				std.Body("Question: %s", q.Title)
-				std.Body("Url:      %s", q.ShareLink)
-				if slackoverflow.Debugging() {
-					newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
-					newq.AddRow(
-						q.QID,
-						time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
-						q.AnswerCount,
-						q.CommentCount,
-						q.Score,
-						q.ViewCount,
-						q.Owner.DisplayName,
-					)
-					newq.Print()
+				if !slackoverflow.Quiet {
+					std.Body("Question: %s", q.Title)
+					std.Body("Url:      %s", q.ShareLink)
+					if slackoverflow.Debugging() {
+						newq := std.NewTable("Question ID", "Time", "Answers", "Comments", "Score", "Views", "Username")
+						newq.AddRow(
+							q.QID,
+							time.Unix(q.CreationDate, 0).UTC().Format("15:04:05 Mon Jan _2 2006"),
+							q.AnswerCount,
+							q.CommentCount,
+							q.Score,
+							q.ViewCount,
+							q.Owner.DisplayName,
+						)
+						newq.Print()
+					}
+					std.Hr()
 				}
 				cse.syncQuestion(q)
-				std.Hr()
 			}
 			if err != nil {
 				fetchQuestions = false

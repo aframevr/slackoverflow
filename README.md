@@ -64,11 +64,45 @@ Help Options:
 **`reconfigure`**
 > Interactive configuration of stackoverflow (aliases: init)
 
-**`restart`**
-> Restart SlackOverflow daemon.
-
 **`run`**
-> Run SlackOverflow once.
+> Run SlackOverflow once.  
+
+| flags | |
+| --- | --- |
+| `--keep-alive` | Keep on rumning every minute |
+
+**service --help**
+> SlackOverflow daemon
+> All service comands require super user (sudo, root) privileges  
+> To install and use SlackOverflow as a service you have to also  
+> copy binary to bin path and configure SlackOverflow as super user.
+
+e.g
+```
+make && make install
+sudo cp $GOPATH/bin/slackoverflow /usr/bin/
+sudo slackoverflow reconfigure
+sudo slackoverflow install
+sudo slackoverflow start
+```
+
+**`service install`**
+> Install SlackOverflow service.  
+
+**`service remove`**
+> Remove SlackOverflow service  
+
+**`service restart`**
+> Restart SlackOverflow service.
+
+**`service start`**
+> Start SlackOverflow service.
+
+**`service status`**
+> Get SlackOverflow service status.
+
+**`service stop`**
+> Stop SlackOverflow service.
 
 **`slack --help`**
 > Slack related commands see slackoverflow slack --help for more info.
@@ -100,15 +134,6 @@ Help Options:
 **`stackexchange watch`**
 > Watch new questions from Stack Exchange site  
 > (updated every minute nothing stored to db or posted to slack)
-
-**`start`**
-> Start SlackOverflow daemon.
-
-**`status`**
-> Get SlackOverflow daemon status.
-
-**`stop`**
-> Stop SlackOverflow daemon.
 
 **`validate`**
 > Validate stackoverflow configuration

@@ -33,6 +33,12 @@
 			"versionExact": "v2"
 		},
 		{
+			"checksumSHA1": "WacE09nRo0R8Ug6PmfNyeFK7FDY=",
+			"path": "github.com/takama/daemon",
+			"revision": "59883a8237b211663a11d7c620d77284ab6b32b1",
+			"revisionTime": "2017-03-10T17:58:35Z"
+		},
+		{
 			"checksumSHA1": "Y+HGqEkYM15ir+J93MEaHdyFy0c=",
 			"path": "golang.org/x/net/context",
 			"revision": "a6577fac2d73be281a500b310739095313165611",

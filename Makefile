@@ -90,6 +90,9 @@ dependencies: ## Install SlackOverflow build dependencies
 	@govendor fetch github.com/robfig/cron@=v2
 	$(call log_ok, github.com/robfig/cron@=v2)
 
+	$(call log_info, Install daemon - A daemon package for use with Go golang services with no dependencies .)
+	@govendor fetch github.com/takama/daemon
+	$(call log_ok, github.com/takama/daemon)
 
 ################################################################################
 # Contributors

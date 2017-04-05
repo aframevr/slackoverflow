@@ -2,6 +2,7 @@ package slackoverflow
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/user"
 	"path"
@@ -14,6 +15,7 @@ import (
 	"github.com/aframevr/slackoverflow/std"
 	flags "github.com/jessevdk/go-flags"
 	"github.com/logrusorgru/aurora"
+	"github.com/takama/daemon"
 )
 
 // User Session object
@@ -24,6 +26,13 @@ var argv Commands
 
 // CLi parser
 var parser = flags.NewParser(&argv, flags.Default)
+
+var stdlog, errlog *log.Logger
+
+// Service daemon
+type Service struct {
+	daemon.Daemon
+}
 
 // Application application
 type Application struct {
@@ -37,10 +46,12 @@ type Application struct {
 	databaseFile  string
 	hostname      string
 	config        yamlContents
+	Quiet         bool
 	Info          info
 	Slack         *slack.Client
 	SQLite3       *sqlite3.Client
 	StackExchange *stackexchange.Client
+	*Service
 }
 
 // Run stackoverflow application
@@ -53,10 +64,22 @@ func (so *Application) Run() {
 		if flagsErr, ok := err.(*flags.Error); ok && flagsErr.Type == flags.ErrHelp {
 			so.Close(0)
 		} else {
-			// There was some errors
-			Warning("Invalid or missing arguments: ")
-			std.Body("See slackoverflow --help for more info")
-			std.Body("See slackoverflow <command> --help for more info about specific command")
+			so.SessionRefresh(true)
+			status, err := so.Service.Status()
+			if err != nil {
+				// There was some errors
+				Warning("Invalid or missing arguments: ")
+				std.Body("See slackoverflow --help for more info")
+				std.Body("See slackoverflow <command> --help for more info about specific command")
+			} else {
+
+				Info(status)
+				var args []string
+				srv := cmdRun{}
+				srv.KeepAlive = true
+				srv.Execute(args)
+			}
+
 			so.Close(0)
 		}
 	}
@@ -97,6 +120,13 @@ func (so *Application) Close(code int) {
 
 // SessionRefresh refresh session and makes sure that all deps are loaded
 func (so *Application) SessionRefresh(soft bool) {
+
+	srv, err := daemon.New("slackoverflow", "SlackOverflow daemon")
+	if err != nil {
+		Error("%v", err)
+		so.Close(1)
+	}
+	so.Service = &Service{srv}
 
 	// Check configuration
 	if !so.config.IsConfigured() {
