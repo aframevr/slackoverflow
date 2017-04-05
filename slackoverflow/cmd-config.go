@@ -29,7 +29,6 @@ func (a *cmdConfig) Execute(args []string) error {
 	si.AddRow("Userame", slackoverflow.user.Username)
 	si.AddRow("Name", slackoverflow.user.Name)
 	si.AddRow("User ID", slackoverflow.user.Uid)
-	si.AddRow("Group", slackoverflow.group.Name)
 	si.AddRow("Group ID", slackoverflow.user.Gid)
 	si.Print()
 

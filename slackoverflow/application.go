@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/user"
 	"path"
-	"strconv"
 	"time"
 
 	"github.com/aframevr/slackoverflow/slack"
@@ -38,7 +37,6 @@ type Service struct {
 type Application struct {
 	cwd           string
 	user          *user.User
-	group         *user.Group
 	startTime     time.Time
 	logLevel      int
 	projectPath   string
@@ -207,11 +205,10 @@ func (so *Application) Debugging() bool {
 
 // Start session
 func Start() *Application {
-	gid := os.Getegid()
+
 	slackoverflow = &Application{}
 	slackoverflow.cwd, _ = os.Getwd()
 	slackoverflow.user, _ = user.Current()
-	slackoverflow.group, _ = user.LookupGroupId(strconv.Itoa(gid))
 	slackoverflow.startTime = time.Now()
 	slackoverflow.projectPath = path.Join(slackoverflow.user.HomeDir, ".slackoverflow")
 	slackoverflow.configFile = path.Join(slackoverflow.projectPath, "slackoverflow.yaml")
